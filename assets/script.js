@@ -10,14 +10,13 @@ let player = {
     ap: 5,
     gp: 0,
     shortsword: true,
-    criminal: true
 }
 
 let ap = player.ap
 let hp = player.hp
 let gp = player.gp
 
-let currentID = 0
+let current = 0
 //I sure wish this map could be in another file. I just can't get it to work though.
 let map = [
     {
@@ -28,25 +27,34 @@ let map = [
                 oid: 0,
                 txt:"Buy an old shield",
                 destination: 1,
-                setState: {shield: true, ap : ap + 1},
+                get state(){
+                    player.ap = ap+1
+                    player.shield = true
+                }
             },
             {
                 oid: 1,
                 txt:"Buy extra rations",
                 destination: 1,
-                setState: {rations: true},
+                get state(){
+                    player.rations = true
+                }
             },
             {
                 oid: 2,
                 txt:"Buy a grappling hook",
                 destination: 1,
-                setState: {rope: true}
+                get state(){
+                    player.rope = true
+                }
             },
             {
                 oid: 3,
                 txt:"Buy a shovel",
                 destination: 1,
-                setState: {shovel: true}
+                get state(){
+                    player.shovel = true
+                }
             },
          ]
     },
@@ -146,7 +154,9 @@ let map = [
                 oid: 3,
                 txt:"A pint of mead. Put it on my tab.",
                 destination: 11,
-                setState: {mead: true}
+                get state(){
+                    player.mead = true
+                }
             },
         ]
     },
@@ -184,13 +194,18 @@ let map = [
                 oid: 0,
                 txt:"I start a bar fight by assaulting the bouncer",
                 destination: 7,
-                setState: {hp: hp-7+ap}
+                get state(){
+                    player.hp = hp-7+ap
+                }
             },
             {
                 oid: 1,
                 txt:"I take out my shortsword and stab the bouncer",
                 destination: 7,
-                setState: {hp: hp-6+ap, criminal: true}
+                get state(){
+                    player.hp = hp-6+ap
+                    player.criminal = true
+                }
             },
             {
                 oid: 2,
@@ -212,13 +227,18 @@ let map = [
                 oid: 0,
                 txt:"I join in the brawl, revelling in the mayhem.",
                 destination: 8,
-                setState: {hp: hp-7+ap}
+                get state(){
+                    player.hp = hp-7+ap
+                }
             },
             {
                 oid: 1,
                 txt:"I stab everyone I can with my shortsword",
                 destination: 13,
-                setState: {hp: hp-6+ap, criminal: true}
+                get state(){
+                    player.hp = hp-6+ap
+                    player.criminal = true
+                }
             },
             {
                 oid: 2,
@@ -229,7 +249,10 @@ let map = [
                 oid: 3,
                 txt:"I hop the bar and rob the barkeep during the chaos.",
                 destination: 16,
-                setState: {coins: true, criminal: true}
+                get state(){
+                    player.gp = gp+10
+                    player.criminal = true
+                }
             },
         ]
     },
@@ -251,13 +274,18 @@ let map = [
                 oid: 2,
                 txt:"I grab the barkeeper by the scruff of his shirt and ask him one more time to devulge what he knows about the Demon Lord.",
                 destination: 12,
-                setState: {criminal: true}
+                get state(){
+                    player.criminal = true
+                }
             },
             {
                 oid: 3,
                 txt:"I quickly scruff the bodies for coinage and other loot.",
                 destination: 17,
-                setState: {criminal: true, coins: true}
+                get state(){
+                    player.gp = gp+10
+                    player.criminal = true
+                }
             },
         ]
     },
@@ -269,7 +297,9 @@ let map = [
                 oid: 0,
                 txt:"Bring it on!",
                 destination: 10,
-                setState: {hp: hp-10+ap}
+                get state(){
+                    player.hp = hp-10+ap
+                }
             },
             {
                 oid: 1,
@@ -286,13 +316,20 @@ let map = [
                 oid: 0,
                 txt:"Now I'd better get out of here...",
                 destination: 18,
-                setState: {goldchain: true, coins: true}
+                get state(){
+                    player.goldchain = true
+                    player.gp = gp+15
+                }
             },
             {
                 oid: 1,
                 txt:"I grab the barkeeper by the scruff of his shirt and ask him one more time to devulge what he knows about the Demon Lord.",
                 destination: 12,
-                setState: {goldchain: true, coins: true, criminal: true}
+                get state(){
+                    player.goldchain = true
+                    player.gp = gp+15
+                    player.criminal = true
+                }
             },
         ]
     },
@@ -337,13 +374,11 @@ let map = [
                 oid: 2,
                 txt:"I grab the barkeeper by the scruff of his shirt and ask him one more time to devulge what he knows about the Demon Lord.",
                 destination: 12,
-                setState: {criminal: true}
             },
             {
                 oid: 3,
                 txt:"I quickly scruff the bodies for coinage and other loot.",
                 destination: 17,
-                setState: {criminal: true}
             },
         ]
     },
@@ -383,7 +418,10 @@ let map = [
                 oid: 0,
                 txt:"Cool beans, time to split.",
                 destination: 18,
-                setState: {criminal:true, coins:true}
+                get state(){
+                    player.gp = gp+10
+                    player.criminal = true
+                }
             },
         ]
     },
@@ -395,25 +433,37 @@ let map = [
                 oid: 0,
                 txt:"I find a compass",
                 destination: 18,
-                setState: {compass: true}
+                get state(){
+                    player.compass = true
+                    player.gp = gp+10
+                }
             },
             {
                 oid: 1,
                 txt:"I find a shining gem",
                 destination: 18,
-                setState: {gem: true}
+                get state(){
+                    player.gem = true
+                    player.gp = gp+10
+                }
             },
             {
                 oid: 2,
                 txt:"I found someones house keys",
                 destination: 18,
-                setState: {housekey: true}
+                get state(){
+                    player.housekey = true
+                    player.gp = gp+10
+                }
             },
             {
                 oid: 3,
                 txt:"I found a spare dagger",
                 destination: 18,
-                setState: {dagger: true}
+                get state(){
+                    player.dagger = true
+                    player.gp = gp+10
+                }
             },
         ]
     },
@@ -435,13 +485,17 @@ let map = [
                 oid: 2,
                 txt:"I quickly run from town to evade the town guard",
                 destination: 20,
-                requirement: "criminal"
+                get req(){
+                    return player.criminal === true
+                }
             },
             {
                 oid: 3,
                 txt:"I go find the house that these keys belong to.",
                 destination: 0,
-                requirement: "housekey"
+                get req(){
+                    return player.housekey === true
+                }
             },
         ]
     },
@@ -453,13 +507,17 @@ let map = [
                 oid: 0,
                 txt:"The guards let me by, with only a solemn nod. I'm apparently in acceptable standing with them.",
                 destination: 21,
-                requirement: "!criminal"
+                get req(){
+                    return player.criminal === undefined
+                }
             },
             {
                 oid: 1,
                 txt:"The guards surround and arrest me. The gaul!",
                 destination: 15,
-                requirement: "criminal"
+                get req(){
+                    return player.criminal === true
+                }
             },
         ]
     },
@@ -471,13 +529,31 @@ let map = [
                 oid: 0,
                 txt:"Climb the wall with my grappling hook",
                 destination: 21,
-                requirement: "?rope"
+                get req(){
+                    return player.rope === true
+                }
             },
             {
                 oid: 1,
                 txt:"Jump into the river",
                 destination: 0,
-                setState: {hp: hp-1}
+                get state(){
+                    player.hp = hp-1
+                }
+            },
+        ]
+    },
+    {
+        id: 21, 
+        desc:"I hoist my way onto the wall, but my grappling hook is stuck in the masonry. A guard spots me and I quickly lower myself down the other side and run.", 
+        options:[
+            {
+                oid: 0,
+                txt:"Damn, I lost my grappling hook",
+                destination: 22,
+                get state(){
+                    player.rope = false
+                }
             },
         ]
     },
@@ -515,7 +591,7 @@ let map = [
 //init game
 function initGame(){
     resetState()
-    writeDoms()
+    initText()
     initBtns()
 }
 initGame()
@@ -525,7 +601,7 @@ function resetState(){
     player.hp = 10
     player.ap = 5
     player.shortsword = true
-    currentID = 0
+    current = 0
     delete player.criminal
     delete player.shield
     delete player.rations
@@ -537,86 +613,75 @@ function resetState(){
     delete player.dagger
     delete player.mead
     delete player.goldchain
+    delete player.housekey
+    updateVariables()
 }
 
 //write our current doms to the screen
-function writeDoms(){
+function initText(){
     hpEl.innerText = player.hp
     apEl.innerText = player.ap
-    textEl.innerText = map[currentID].desc
-   
-    console.log(player)
+    textEl.innerText = ""
     btnContainerEl.innerHTML = ""
-    for (let i = 0; i<map[currentID].options.length; i++){
-        let op = map[currentID].options[i].requirement
-        
-        console.log(op)
-        let deleteflag = false
 
-            if(op !== undefined && op.includes("?")){
-                op = op.replace("?",'')
-                deleteflag = true
-            } 
+    if (current < 0){
+        resetState()
+    }
 
-            if (op !== undefined && op.includes("!") && !checkOption(op.replace("!",''))){
-            let btn = document.createElement("button")
-            btn.innerText = map[currentID].options[i].txt
-            btn.classList.add("btn")
-            btn.dataset.button = i
-            btnContainerEl.append(btn)
-        } else if (checkOption(op)){
-            let btn = document.createElement("button")
-            btn.innerText = map[currentID].options[i].txt
-            btn.classList.add("btn")
-            btn.dataset.button = i
-            btnContainerEl.append(btn)
-        }
+    textEl.innerText = map[current].desc
 
-        if (deleteflag === true){
-            deleteObject(op)
+    for (let i = 0; i<map[current].options.length; i++){
+
+        if (checkRequirement(map[current].options[i].req)){
+        let btnEl = document.createElement("button")
+        let btnContent = map[current].options[i].txt
+        btnEl.innerText = btnContent
+        btnEl.classList.add("btn")
+        btnEl.dataset.button = i
+        btnContainerEl.append(btnEl)
         }
     }
 }
-
 //check for player hp
 function hpCheck(){
     if (player.hp <= 0){
         console.log("Game Over, You Died")
         initGame()
     } else console.log("Still alive!")
-    if (currentID < 0){
+    if (current < 0){
         console.log("Game Over, Something Bad Happened to You")
         initGame()
     }
 }
 
-function initBtns(){
-    const btnEl = document.querySelectorAll('.btn')
-    btnEl.forEach((btn)=>{
-        btn.addEventListener("click", handleOption)
-    })
-}
-
-function handleOption(e){
-    let option = e.target.dataset.button
-   
-    if (map[currentID].options[option].setState){
-        player = Object.assign(player, map[currentID].options[option].setState)
-    }
-
-    currentID = map[currentID].options[option].destination
-    hpCheck()
-    writeDoms()
-    initBtns()
-}
-
-function checkOption(option){
-    console.log(option)
-    if (option === undefined || player.hasOwnProperty(option) || option === true){
+function checkRequirement(bool){
+    if (bool === true || bool === undefined){
         return true
-    } else return false
+    } return false
 }
 
-function deleteObject(option){
-    delete player[option]
+function handleClick(e){
+    let option = e.target.dataset.button
+    if (map[current].options[option].state){
+        map[current].options[option].state
+    }
+    current = map[current].options[option].destination
+    initText()
+    initBtns()
+    updateVariables()
+    console.log(player)
+}
+
+
+function updateVariables(){
+    hp = player.hp
+    ap = player.ap
+    gp = player.gp
+}
+
+function initBtns(){
+    const btnEls = document.querySelectorAll(".btn")
+    btnEls.forEach(btn =>{
+        btn.addEventListener("click", handleClick)
+    })
 }
