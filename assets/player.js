@@ -3,6 +3,7 @@ export let player = {
     ap: 5,
     gp: 0,
     shortsword: true,
+    day: 1
 }
 
 export let ap = player.ap

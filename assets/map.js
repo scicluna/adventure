@@ -3,7 +3,7 @@ import {player, hp, ap, gp} from "./player.js"
 export const map = [
     {
         id: 0, 
-        desc:"I take my shortsword and make the final preparations for my journey. I look down at my last piece of silver and figure i should spend it before taking off on my joureny to defeat the Demon Lord.", 
+        desc:"I take my shortsword and make the final preparations for my journey. I look down at my last piece of silver and figure i should spend it before taking off on my joureny to defeat the Demon Lord. (Health is in the lower left. Armor is in the lower right. Armor mitigates damage that you would take. If you hit 0 health, you die. To view your inventory, use dev-tools (right click and inspect -> console.)", 
         options:[
             {
                 oid: 0,
@@ -51,16 +51,11 @@ export const map = [
             },
             {
                 oid: 1,
-                txt:"I head north along the main road",
+                txt:"I head towards the town gate, ready to leave on a great adventure",
                 destination: 19
             },
             {
                 oid: 2,
-                txt:"I follow the northern river out of town",
-                destination: 19
-            },
-            {
-                oid: 3,
                 txt:"Honestly. This is a bad idea, I'm just going to stay home instead.",
                 destination: -1
             },
@@ -98,16 +93,11 @@ export const map = [
         options:[
             {
                 oid: 0,
-                txt:"I head north along the main road",
+                txt:"I head towards the town gate, ready to leave on a great adventure",
                 destination: 19
             },
             {
                 oid: 1,
-                txt:"I follow the northern river out of town",
-                destination: 19
-            },
-            {
-                oid: 2,
                 txt:"I head over to the tavern, hoping that i can learn more there.",
                 destination: 4
             },
@@ -265,7 +255,6 @@ export const map = [
                 txt:"I quickly scruff the bodies for coinage and other loot.",
                 destination: 17,
                 get state(){
-                    player.gp = gp+10
                     player.criminal = true
                 }
             },
@@ -474,7 +463,7 @@ export const map = [
             {
                 oid: 3,
                 txt:"I go find the house that these keys belong to.",
-                destination: 0,
+                destination: 22,
                 get req(){
                     return player.housekey === true
                 }
@@ -488,7 +477,7 @@ export const map = [
             {
                 oid: 0,
                 txt:"The guards let me by, with only a solemn nod. I'm apparently in acceptable standing with them.",
-                destination: 21,
+                destination: 24,
                 get req(){
                     return player.criminal === undefined
                 }
@@ -518,7 +507,7 @@ export const map = [
             {
                 oid: 1,
                 txt:"Jump into the river",
-                destination: 0,
+                destination: 23,
                 get state(){
                     player.hp = hp-1
                 }
@@ -532,38 +521,432 @@ export const map = [
             {
                 oid: 0,
                 txt:"Damn, I lost my grappling hook",
-                destination: 22,
+                destination: 24,
                 get state(){
                     player.rope = false
                 }
             },
         ]
     },
+    {
+        id: 22, 
+        desc:"I run down the street trying the housekey on every house I can think of. Lucky for me, I get it right on the second try. Nobody is home so I ransack the place. Unfortunately, the only thing worth bringing with me is a sack of potatoes.", 
+        options:[
+            {
+                oid: 0,
+                txt:"Atleast I've got rations now.",
+                destination: 18,
+                get state(){
+                    player.houskey = false
+                    player.rations = true
+                },
+                get req(){
+                    return player.rations === false || player.rations === undefined
+                }
+            },
+            {
+                oid: 1,
+                txt:"I'm really carrying all the food I can already, though...",
+                destination: 18,
+                get state(){
+                    player.housekey = false
+                },
+                get req(){
+                    return player.rations === true
+                }
+            },
+        ]
+    },
+
+    {
+        id: 23, 
+        desc:"I dive into the river and swim my way out of town. I brush against some sharp rocks during my dive, but swim onwards. Before I know it, I wash up on the river bank clear from the town. Hopefully the guards don't chase me.", 
+        options:[
+            {
+                oid: 0,
+                txt:"I'm drenched, but atleast I got away alive.",
+                destination: 24,
+                get state(){
+                    player.criminal = false
+                },
+                get req(){
+                    return player.rations === false || player.rations === undefined
+                }
+            },
+            {
+                oid: 1,
+                txt:"I'm drenched and all of my rations are ruined.",
+                destination: 24,
+                get state(){
+                    player.rations = false
+                    player.criminal = false
+                },
+                get req(){
+                    return player.rations === true
+                }
+            },
+        ]
+    },
+
+    {
+        id: 24, 
+        desc:"I leave town for the first time in my life. And set off heading north.", 
+        options:[
+            {
+                oid: 0,
+                txt:"I follow the main road.",
+                destination: 25,
+            },
+            {
+                oid: 1,
+                txt:"I follow the river.",
+                destination: 0,
+            },
+        ]
+    },
     
     {
-        id: 50, 
+        id: 25, 
         desc:"Along the roadway, I come across a man wearing leather armor slouched over on the road. He calls out 'Traveler, help me please, I'm injured and cannot move my leg'", 
         options:[
             {
                 oid: 0,
                 txt:"I approach the stranger and offer him my assistance",
-                destination: 0
+                destination: 26,
+                get state(){
+                    player.hp = hp-7+ap
+                }
             },
             {
                 oid: 1,
                 txt:"I walk off of the road and avoid getting too close to him",
-                destination: 0
+                destination: 30
             },
             {
                 oid: 2,
                 txt:"I charge the stranger with my shortsword and attempt to take his life",
-                destination: 0
+                destination: 28,
+                get state(){
+                    player.hp = hp-6+ap
+                }
             },
             {
                 oid: 3,
                 txt:"I yell back to him and try to learn more information",
-                destination: 0
+                destination: 29
             },
         ]
-    }
+    },
+    {
+        id: 26, 
+        desc:"I approach the stranger to inspect his wounds. And then he stabs me with a knife! I stumble backwards and then realize that I'm surrounded by armed bandits. The 'wounded' man yells 'Drop your belongings, and we'll spare your life.'", 
+        options:[
+            {
+                oid: 0,
+                txt:"En guarde, bandit scum",
+                destination: 27,
+                get state(){
+                    player.hp = hp-10+ap
+                }
+            },
+            {
+                oid: 1,
+                txt:"Fine, fine, take my things.",
+                destination: 33,
+                get state(){
+                    player.gp = 0
+                    if (player.shield === true){
+                        delete player.shield
+                        player.ap = ap-1
+                    }
+                    delete player.shortsword
+                    delete player.rations
+                    delete player.shovel
+                    delete player.coins
+                    delete player.gem
+                    delete player.compass
+                    delete player.dagger
+                    delete player.mead
+                    delete player.goldchain
+                    delete player.housekey
+                }
+            },
+            {
+                oid: 2,
+                txt:"I make a run for it",
+                destination: 32,
+                get state(){
+                    player.hp = hp-8+ap
+                }
+            },
+        ]
+    },
+    {
+        id: 27, 
+        desc:"The battle is bloody and fierce as I swing my sword and fight off the ten bandits single-handedly. After I slay the third bandit, the rest flee leaving me to lick my wounds. The three bandits leave me a handful of coins, a spare dagger, some rope, a shortbow, and a whistle.", 
+        options:[
+            {
+                oid: 0,
+                txt:"That was a close one...",
+                destination: 33,
+                get state(){
+                    player.hp = hp-7+ap
+                    player.gp = gp+5
+                    player.rope = true
+                    player.dagger = true
+                    player.shortbow = true
+                    player.whistle = true
+                }
+            },
+        ]
+    },
+    {
+        id: 28, 
+        desc:"I slay the man only to be surrounded by ten of his friends. They yell 'You killed Thomas, we'll kill you, you bastard!!'", 
+        options:[
+            {
+                oid: 0,
+                txt:"En guarde, bandit scum",
+                destination: 27,
+                get state(){
+                    player.hp = hp-10+ap
+                }
+            },
+            {
+                oid: 1,
+                txt:"I make a run for it",
+                destination: 32,
+                get state(){
+                    player.hp = hp-8+ap
+                }
+            },
+        ]
+    },
+    {
+        id: 29, 
+        desc:"I yell out to the man asking him what happened. He groans and says, 'Look kid, you're surrounded by my boys. Your money or your life.'", 
+        options:[
+            {
+                oid: 0,
+                txt:"En guarde, bandit scum",
+                destination: 27,
+                get state(){
+                    player.hp = hp-10+ap
+                }
+            },
+            {
+                oid: 1,
+                txt:"I make a run for it",
+                destination: 31,
+                get state(){
+                    player.hp = hp-6+ap
+                }
+            },
+        ]
+    },
+    {
+        id: 30, 
+        desc:"I notice that the man's limp suddenly vanishes as he begins to chase me off of the road, other men appearing in tow.", 
+        options:[
+            {
+                oid: 0,
+                txt:"En guarde, bandit scum",
+                destination: 27,
+                get state(){
+                    player.hp = hp-10+ap
+                }
+            },
+            {
+                oid: 1,
+                txt:"I make a run for it",
+                destination: 31,
+            },
+        ]
+    },
+    {
+        id: 31, 
+        desc:"I take my headstart and run with it, the footchase lasts for an hour before I think they've given up.", 
+        options:[
+            {
+                oid: 0,
+                txt:"Huff huff... I'm exhausted... Where even am I now?",
+                destination: 0,
+                get state(){
+                    player.hp = hp-1
+                }
+            },
+        ]
+    },
+    {
+        id: 32, 
+        desc:"As I flee, an arrow hits my shoulder. But i continue running strong. After an hour, I think they've given up.c", 
+        options:[
+            {
+                oid: 0,
+                txt:"Huff huff... I'm exhausted... Where even am I now?",
+                destination: 0,
+                get state(){
+                    player.hp = hp-1
+                }
+            },
+        ]
+    },
+    {
+        id: 33, 
+        desc:"After my run-in with the bandits, I continue north along the main road until I reach the town of 'Yorish'. The guards wave me through the town gate after questioning me, and I spend some much needed time here.", 
+        options:[
+            {
+                oid: 0,
+                txt:"I head over to the inn for some much needed rest (5 gp)",
+                destination: 36,
+                get state(){
+                    player.day++
+                    player.gp = gp-5
+                    player.rested = true
+                    if (player.hp+3 < 10){
+                        player.hp = hp+3
+                    } else player.hp = 10
+                },
+                get req(){
+                    return player.gp >= 5 && player.rested === false
+                }
+            },
+            {
+                oid: 1,
+                txt:"I spend some time gathering information about the upcomming leg of my journey.",
+                destination: 34,
+            },
+            {
+                oid: 2,
+                txt:"I visit the shops, looking to buy more supplies.",
+                destination: 35,
+ 
+            },
+            {
+                oid: 3,
+                txt:"I continue on my journey, passing quickly through the town.",
+                destination: 0,
+            },
+        ]
+    },
+    {
+        id: 34, 
+        desc:"I ask all around town regarding my further journey north and learn that a landslide has blocked the northern road towards the capitol city.", 
+        options:[
+            {
+                oid: 0,
+                txt:"Good to know...",
+                destination: 36,
+            },
+        ]
+    },
+    {
+        id: 35, 
+        desc:"I head over to the marketplace and browse the merchant's wares. The merchant is selling a ring of protection for 15 gp, spices for 5gp, and a compass for 10gp", 
+        options:[
+            {
+                oid: 0,
+                txt:"Buy the ring of protection",
+                destination: 35,
+                get state(){
+                    player.ring = true
+                    player.ap = ap+1
+                    player.gp = gp-15
+                },
+                get req(){
+                    return player.gp >= 15 && player.ring === false
+                }
+            },
+            {
+                oid: 1,
+                txt:"Buy the spices",
+                destination: 35,
+                get state(){
+                    player.spices = true
+                    player.gp = gp-5
+                },
+                get req(){
+                    return player.gp >= 5 && player.spices === false
+                }
+            },
+            {
+                oid: 2,
+                txt:"Buy the compass",
+                destination: 35,
+                get state(){
+                    player.compass = true
+                    player.gp = gp-10
+                },
+                get req(){
+                    return player.gp >= 10 && player.compass === false
+                }
+ 
+            },
+            {
+                oid: 3,
+                txt:"I leave the store",
+                destination: 36,
+            },
+        ]
+    },
+    {
+        id: 36, 
+        desc:"I continue to browse the town", 
+        options:[
+            {
+                oid: 0,
+                txt:"Head to the marketplace",
+                destination: 35,
+
+            },
+            {
+                oid: 1,
+                txt:"Gather information",
+                destination: 34,
+            },
+            {
+                oid: 2,
+                txt:"Continue my journey",
+                destination: 0,
+                
+            },
+            {
+                oid: 3,
+                txt:"I wait until nightfall, and then attempt to rob the marketplace",
+                destination: 37,
+                get state(){
+                    player.day++
+                    player.criminal = true
+                }
+            },
+        ]
+    },
+    {
+        id: 0, 
+        desc:"", 
+        options:[
+            {
+                oid: 0,
+                txt:"",
+                destination: 0,
+
+            },
+            {
+                oid: 1,
+                txt:"",
+                destination: 0,
+            },
+            {
+                oid: 2,
+                txt:"",
+                destination: 0,
+ 
+            },
+            {
+                oid: 3,
+                txt:"",
+                destination: 0,
+            },
+        ]
+    },
 ]

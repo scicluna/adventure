@@ -21,6 +21,7 @@ function resetState(){
     player.ap = 5
     player.shortsword = true
     current = 0
+    player.day = 1
     delete player.criminal
     delete player.shield
     delete player.rations
@@ -33,6 +34,12 @@ function resetState(){
     delete player.mead
     delete player.goldchain
     delete player.housekey
+    delete player.rations
+    delete player.shortbow
+    delete player.whistle
+    delete player.ring
+    delete player.spices
+    delete player.compass
     updateVariables()
 }
 
@@ -66,25 +73,32 @@ function hpCheck(){
     if (player.hp <= 0){
         console.log("Game Over, You Died")
         initGame()
-    } else console.log("Still alive!")
+    } 
     if (current < 0){
         console.log("Game Over, Something Bad Happened to You")
         initGame()
     }
+    console.log("Still alive!")
 }
 
+//check if the booleon is false else return true
 function checkRequirement(bool){
-    if (bool === true || bool === undefined){
-        return true
-    } return false
+    if (bool === false){
+        return false
+    } 
+    return true
 }
 
+//handles a clicked option
 function handleClick(e){
     let option = e.target.dataset.button
+    //if a state exists, do it
     if (map[current].options[option].state){
         map[current].options[option].state
     }
+    //change our map's destination
     current = map[current].options[option].destination
+    //update everything
     hpCheck()
     initText()
     initBtns()
@@ -92,6 +106,7 @@ function handleClick(e){
     console.log(player)
 }
 
+//init the new buttons
 function initBtns(){
     const btnEls = document.querySelectorAll(".btn")
     btnEls.forEach(btn =>{
