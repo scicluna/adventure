@@ -19,6 +19,7 @@ initGame()
 function resetState(){
     player.hp = 10
     player.ap = 5
+    player.gp = 0
     player.shortsword = true
     current = 0
     player.day = 1

@@ -907,7 +907,7 @@ export const map = [
             {
                 oid: 2,
                 txt:"Continue my journey",
-                destination: 0,
+                destination: 45,
                 
             },
             {
@@ -918,6 +918,183 @@ export const map = [
                     player.day++
                     player.criminal = true
                 }
+            },
+        ]
+    },
+    {
+        id: 37, 
+        desc:"I creep up towards the marketplace after sundown, my only vision coming from the faint moonlight and the night guard's torches. The marketplace is guarded by two armed guards, the merchant's display is still out in the open, ripe for theft.", 
+        options:[
+            {
+                oid: 0,
+                txt:"I go in shortsword out and attack the guards.",
+                destination: 38,
+                get state(){
+                    player.hp = hp-8+ap
+                },
+
+            },
+            {
+                oid: 1,
+                txt:"I use my whistle as a distraction, blowing it and then quickly changing locations.",
+                destination: 40,
+                get req(){
+                    return player.whistle === true
+                },
+            },
+            {
+                oid: 2,
+                txt:"I get out my shortbow and begin shooting arrows at them from the darkness",
+                destination: 39,
+                get req(){
+                    return player.shortbow === true
+                },
+ 
+            },
+            {
+                oid: 3,
+                txt:"This is a terrible idea, I change my mind.",
+                destination: 36,
+            },
+        ]
+    },
+    {
+        id: 38, 
+        desc:"The guards were farm more skilled than I thought they would be. The battle is fierce and I sustain major damage. I inevitably win, but my shortsword breaks during the battle.", 
+        options:[
+            {
+                oid: 0,
+                txt:"Damn. Atleast I get to loot the merchant's stall still.",
+                destination: 41,
+                get state(){
+                    player.shortsword = false
+                },
+
+            },
+        ]
+    },
+    {
+        id: 39, 
+        desc:"I shoot at the guards with my shortbow, and before I know it, they both lay on the ground dead, never having pinpointed my location.", 
+        options:[
+            {
+                oid: 0,
+                txt:"Like shooting fish in a barrel. Time to rob the merchant's stall.",
+                destination: 41,
+            },
+        ]
+    },
+    {
+        id: 40, 
+        desc:"The guards fall for my ploy, and before they knew it, I was already at the merchant's stall.", 
+        options:[
+            {
+                oid: 0,
+                txt:"Can't believe they fell for that...",
+                destination: 41,
+            },
+        ]
+    },
+    {
+        id: 41, 
+        desc:"I quickly ransack the merchant's stall and grab the remaining merchandise and a sack of gold.", 
+        options:[
+            {
+                oid: 0,
+                txt:"Cha-Ching!",
+                destination: 42,
+                get state(){
+                    if (player.ring !== true){
+                        player.ring = true
+                        player.ap = ap+1
+                    }
+                    player.spices = true
+                    player.compass = true
+                    player.gp = gp+25
+                }
+            },
+        ]
+    },
+    {
+        id: 42, 
+        desc:"With the guard on my tail, I find myself trapped inside of the town against closed gates.", 
+        options:[
+            {
+                oid: 0,
+                txt:"I scale the wall using my grappling hook",
+                destination: 44,
+                get req(){
+                    player.rope === true
+                }
+            },
+            {
+                oid: 1,
+                txt:"I dig a hidey hole and wait until morning",
+                destination: 43,
+                get req(){
+                    player.shovel === true
+                }
+            },
+            {
+                oid: 2,
+                txt:"Oh shit... I linger around too long and they catch me.",
+                destination: 15,
+            },
+        ]
+    },
+    {
+        id: 43, 
+        desc:"I wait in my hole until morning and then walk out of town confidently. Fortunately, the guards don't seem to have gotten a good look at my face and let me through.", 
+        options:[
+            {
+                oid: 0,
+                txt:"That was a close one!",
+                destination: 45,
+                get state(){
+                    player.day++
+                }
+            },
+        ]
+    },
+    {
+        id: 44, 
+        desc:"As I climb over the wall, I'm spotted. My grappling hook gets stuck in the wall and I quickly hop down the wall onto the other side. I run into the night.", 
+        options:[
+            {
+                oid: 0,
+                txt:"I lost my rope, but atleast I'm still alive!",
+                destination: 45,
+                get state(){
+                    player.rope = false
+                }
+            },
+        ]
+    },
+    {
+        id: 45, 
+        desc:"Finally on the road again...", 
+        options:[
+            {
+                oid: 0,
+                txt:"",
+                destination: 0,
+
+            },
+            {
+                oid: 1,
+                txt:"",
+                destination: 0,
+            },
+            {
+                oid: 2,
+                txt:"",
+                destination: 0,
+ 
+            },
+            {
+                oid: 3,
+                txt:"",
+                destination: 0,
             },
         ]
     },
